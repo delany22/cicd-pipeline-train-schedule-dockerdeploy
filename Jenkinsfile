@@ -8,5 +8,18 @@ pipeline {
                 archiveArtifacts artifacts: 'dist/trainSchedule.zip'
             }
         }
-    }
+        stage('Build Docker Image') {
+            when {
+                branch 'master'    
+            }
+            stages {        
+                script {
+                    app = docker.build("delany22/train-schedule')
+                    app.inside {
+                        sh 'echo $(curl localhost:8080)'    
+                                }
+                        }    
+                    }
+            }
+        }
 }
